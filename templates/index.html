@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ResearchAI — Research with evidence</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="/" aria-label="ResearchAI home"><span class="brand-mark">R</span><span>Research<span class="brand-ai">AI</span></span></a>
+      <button class="new-research" id="new-session"><span>＋</span> New research</button>
+      <div class="side-label">WORKSPACE</div>
+      <button class="nav-item active" id="research-tab"><span>⌕</span> Research</button>
+      <div class="side-label">RECENT RESEARCH</div>
+      <div class="session-list" id="session-list"></div>
+      <div class="side-label side-label-row"><span>YOUR SOURCES</span><span id="source-count">0</span></div>
+      <div class="source-list" id="source-list"></div>
+      <div class="side-bottom">
+        <button class="nav-item" id="theme-toggle"><span>◐</span> Toggle appearance</button>
+        <div class="connection"><span class="connection-dot" id="connection-dot"></span><span id="connection-label">Connecting to Ollama…</span></div>
+        <div class="model-row"><label for="model-select">Answer model</label><select id="model-select"><option value="llama3.2:latest" {% if default_model == 'llama3.2:latest' %}selected{% endif %}>Llama 3.2</option><option value="qwen2.5:latest" {% if default_model == 'qwen2.5:latest' %}selected{% endif %}>Qwen 2.5</option></select></div>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><button class="mobile-menu" id="mobile-menu" aria-label="Open menu">☰</button><span>Research workspace</span><span class="local-badge"><i></i> Local &amp; private</span></header>
+      <section class="content">
+        <div class="welcome" id="welcome">
+          <div class="eyebrow"><span class="sparkle">✳</span> YOUR PERSONAL RESEARCH DESK</div>
+          <h1>Research smarter.<br><span>Find answers with evidence.</span></h1>
+          <p class="intro">Bring websites into one focused workspace. Ask questions and get grounded answers with source citations.</p>
+          <form class="url-form" id="add-form">
+            <span class="url-icon">↗</span><input type="url" id="url-input" placeholder="Paste a website URL to get started…" required aria-label="Website URL">
+            <button type="submit" id="add-button">Add website <span>→</span></button>
+          </form>
+          <div class="hint"><span class="hint-check">✓</span> Public websites only <span class="hint-separator">·</span> No cloud AI APIs</div>
+          <div class="starter-grid">
+            <div class="starter-title">GET STARTED</div>
+            <button class="starter-card" data-url="https://flask.palletsprojects.com/"><span class="starter-icon purple">⌘</span><span><b>Try an example</b><small>Index the Flask documentation</small></span><span class="card-arrow">↗</span></button>
+            <button class="starter-card" data-question="What are the main concepts in my sources?"><span class="starter-icon blue">✳</span><span><b>Explore key concepts</b><small>Find the important ideas</small></span><span class="card-arrow">→</span></button>
+            <button class="starter-card" data-question="Summarize my indexed sources."><span class="starter-icon amber">▤</span><span><b>Get a summary</b><small>Understand the big picture</small></span><span class="card-arrow">→</span></button>
+          </div>
+        </div>
+        <div class="conversation hidden" id="conversation">
+          <div class="indexed-banner" id="indexed-banner"><span class="banner-icon">✓</span><span><b>Sources are ready</b><small>Ask a question to explore what you’ve indexed.</small></span></div>
+          <div class="messages" id="messages"></div>
+          <div class="chat-spacer"></div>
+        </div>
+        <div class="chat-box">
+          <form id="chat-form">
+            <textarea id="question-input" rows="1" placeholder="Ask a question about your sources…" aria-label="Your research question"></textarea>
+            <div class="chat-actions"><span><kbd>Enter</kbd> to send <span class="hint-separator">·</span> <span id="selected-count">All sources</span></span><button id="send-button" type="submit" aria-label="Send question">↑</button></div>
+          </form>
+        </div>
+        <div class="footer-note">AI answers can make mistakes. Check cited sources for context.</div>
+      </section>
+    </main>
+    <aside class="evidence-panel" id="evidence-panel">
+      <div class="panel-heading"><div><span class="panel-eyebrow">RESEARCH CONTEXT</span><h2>Sources</h2></div><span class="panel-count" id="evidence-count">—</span></div>
+      <p class="panel-intro">Evidence retrieved for your latest answer will appear here.</p>
+      <div id="evidence-list" class="evidence-list"></div>
+      <div class="privacy-card"><span>◈</span><div><b>Your research stays local</b><p>Content and conversations are stored on this device.</p></div></div>
+    </aside>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>
